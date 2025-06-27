@@ -1,9 +1,9 @@
+
 # Revised AI Business Intelligence Dashboard
 
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import openai
 import os
 from io import BytesIO
@@ -125,14 +125,8 @@ Write a short business insights summary including trends, drivers, and opportuni
         if cat_col:
             top_cats = df.groupby(cat_col)[target_col].sum().sort_values(ascending=False).head(10)
             fig2 = px.bar(x=top_cats.index, y=top_cats.values, labels={'x': cat_col, 'y': target_col},
-                          title=f"Top {cat_col} by {target_col}", text=top_cats.values)
-            fig2.update_traces(marker=dict(line=dict(width=1, color='black')), textposition='outside')
-            fig2.update_layout(bargap=0.4)
+                          title=f"Top {cat_col} by {target_col}")
             st.plotly_chart(fig2, use_container_width=True)
-
-            fig4 = go.Figure(data=[go.Pie(labels=top_cats.index, values=top_cats.values, hole=0.5)])
-            fig4.update_layout(title=f"{target_col} Distribution by {cat_col} (Doughnut Chart)")
-            st.plotly_chart(fig4, use_container_width=True)
 
         fig3 = px.histogram(df, x=target_col, title=f"Distribution of {target_col}")
         st.plotly_chart(fig3, use_container_width=True)
